@@ -45,6 +45,12 @@ class Middle_branch
     {
         return house->get_status();
     }
+
+    void deleteMiddleBranch()
+    {
+        delete house;
+        house = nullptr;
+    }
 };
 
 class Big_branch
@@ -101,6 +107,17 @@ class Big_branch
         }
         return false;
     }
+
+    void deleteBigBranch()
+    {
+        delete house;
+        house = nullptr;
+        for (int i = 0; i < count; ++i) {
+            middleBranches[i]->deleteMiddleBranch();
+            delete middleBranches[i];
+            middleBranches[i] = nullptr;
+        }
+    }
 };
 
 class Tree
@@ -126,6 +143,15 @@ class Tree
         }
         return false;
     }
+
+    void deleteTree()
+    {
+        for (int i = 0; i < count; ++i) {
+            bigBranches[i]->deleteBigBranch();
+            delete bigBranches[i];
+            bigBranches[i] = nullptr;
+        }
+    }
 };
 
 class Village
@@ -149,6 +175,15 @@ class Village
         }
         return false;
     }
+
+    void deleteVillage()
+    {
+        for (int i = 0; i < 5; ++i) {
+            trees[i]->deleteTree();
+            delete trees[i];
+            trees[i] = nullptr;
+        }
+    }
 };
 
 int main() {
@@ -161,6 +196,7 @@ int main() {
             if (!village->find_resident(name)) std::cout << "Couldn't find anyone with the name " << name << std::endl;
         }
     }
+    village->deleteVillage();
     delete village;
     village = nullptr;
     return 0;
